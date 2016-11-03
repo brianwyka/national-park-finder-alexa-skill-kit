@@ -1,0 +1,40 @@
+{
+  "intents": [
+    {
+      "intent": "WhatParksInStateIntent",
+      "slots": [
+        {
+          "name": "State",
+          "type": "LIST_OF_STATES"
+        }
+      ]
+    },
+    {
+      "intent": "HowManyParksInStateIntent",
+      "slots": [
+        {
+          "name": "State",
+          "type": "LIST_OF_STATES"
+        }
+      ]
+    },
+    {
+      "intent": "StateOnlyIntent",
+      "slots": [
+        {
+          "name": "State",
+          "type": "LIST_OF_STATES"
+        }
+      ]
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}
