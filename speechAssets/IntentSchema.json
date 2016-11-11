@@ -23,7 +23,7 @@
       "slots": [
         {
           "name": "State",
-          "type": "LIST_OF_STATES"
+          "type": "AMAZON.US_STATE"
         }
       ]
     },

@@ -111,15 +111,15 @@ NationalParkFinder.prototype.eventHandlers.onSessionEnded = function (sessionEnd
 NationalParkFinder.prototype.intentHandlers = {
     
     "WhatParksInStateIntent": function (intent, session, response) {
-        whatParksInStateIntent(intent, response);
+        whatParksInStateIntent(intent, session, response);
     },
     
     "HowManyParksInStateIntent": function (intent, session, response) {
-        howManyParksInStateIntent(intent, response);
+        howManyParksInStateIntent(intent,  session, response);
     },
     
     "StateOnlyIntent": function (intent, session, response) {
-        stateOnlyIntent(intent, response);
+        stateOnlyIntent(intent,  session, response);
     },
 
     "AMAZON.HelpIntent": function (intent, session, response) {
@@ -246,7 +246,7 @@ function welcomeIntent(response) {
 /**
  * Find out which parks are in a particular state
  */
-function whatParksInStateIntent(intent, response) {
+function whatParksInStateIntent(intent, session, response) {
     var state = intent.slots.State.value.toLowerCase();
     getNationalParks(state, function (nationalParks) {
         var cardTitle = "Your National Parks";
@@ -258,7 +258,7 @@ function whatParksInStateIntent(intent, response) {
 /**
  * Find out how many parks are in a particular state
  */
-function howManyParksInStateIntent(intent, response) {
+function howManyParksInStateIntent(intent, session, response) {
     var state = intent.slots.State.value.toLowerCase();
     getNationalParks(state, function (nationalParks) {
         var cardTitle = "Your National Parks";
@@ -270,7 +270,7 @@ function howManyParksInStateIntent(intent, response) {
 /**
  * Find out how many parks are in a particular state
  */
-function stateOnlyIntent(intent, response) {
+function stateOnlyIntent(intent, session, response) {
     var state = intent.slots.State.value.toLowerCase();
     getNationalParks(state, function (nationalParks) {
         var cardTitle = "Your National Parks";
