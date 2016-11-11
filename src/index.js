@@ -1,61 +1,72 @@
-/**
-    Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-
-    Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
-
-        http://aws.amazon.com/apache2.0/
-
-    or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-*/
-
-/**
- * This simple sample has no external dependencies or session management, and shows the most basic
- * example of how to create a Lambda function for handling Alexa Skill requests.
- *
- * Examples:
- * One-shot model:
- *  User: "Alexa, ask Space Geek for a space NationalParkFinder"
- *  Alexa: "Here's your space NationalParkFinder: ..."
- */
 
 /**
  * App ID for the skill
  */
-var APP_ID = undefined; //OPTIONAL: replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
+var APP_ID = undefined;
 
 /**
- * Array containing space NationalParkFinders.
+ * Array containing states
  */
-var NATIONAL_PARKS = {
-    "alaska": ["Denali", "Gates of the Arctic", "Glacier Bay", "Katmai", "Kenai Fjords", "Kobuk Valley", "Lake Clark", "Wrangell - St. Elias"],
-    "american samoa": ["American Samoa"],
-    "arizona": ["Grand Canyon", "Petrified Forest", "Saquaro"],
-    "arkansas": ["Hot Springs"],
-    "california": ["Channel Islands", "Death Valley", "Joshua Tree", "Kings Canyon", "Lassen Volcanic", "Redwood", "Sequoia", "Yosemite"],
-    "colorado": ["Black Canyon of the Gunnison", "reat Sand Dunes", "Mesa Verde", "Rocky Mountain"],
-    "florida": ["Biscayne", "Dry Tortugas", "Everglades"],
-    "hawaii": ["Haleakala", "Hawaii Volcanoes"],
-    "idaho": ["Yellowstone"],
-    "kentucky": ["Mammoth Cave"],
-    "maine": ["Acadia"],
-    "michigan": ["Isle Royale"],
-    "minnesota": ["Voyageurs"],
-    "montana": ["Glacier", "Yellowstone"],
-    "nevada": ["Great Basin"],
-    "new mexico": ["Carlsbad Caverns"],
-    "north carolina": ["Great Smoky Mountains"],
-    "north dakota": ["Theodore Roosevelt"],
-    "ohio": ["Cuyahoga Valley"],
-    "oregon": ["Crater Lake"],
-    "south sarolina": ["Congaree"],
-    "south dakota": ["Badlands", "Wind Cave"],
-    "tennessee": ["Great Smoky Mountains"],
-    "texas": ["Big Bend", "Guadalupe Mountains"],
-    "u s virgin islands": ["Virgin Islands"],
-    "utah": ["Arches", "Bryce Canyon", "Capitol Reef", "Canyonlands", "Zion"],
-    "virginia": ["Shenandoah"],
-    "washington": ["Mount Rainier", "North Cascades", "Olympic"],
-    "wyoming": ["Grand Teton", "Yellowstone"]
+var STATES = {
+    "AL": "Alabama",
+    "AK": "Alaska",
+    "AS": "American Samoa",
+    "AZ": "Arizona",
+    "AR": "Arkansas",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DE": "Delaware",
+    "DC": "District Of Columbia",
+    "FM": "Federated States Of Micronesia",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "GU": "Guam",
+    "HI": "Hawaii",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "IA": "Iowa",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "ME": "Maine",
+    "MH": "Marshall Islands",
+    "MD": "Maryland",
+    "MA": "Massachusetts",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MS": "Mississippi",
+    "MO": "Missouri",
+    "MT": "Montana",
+    "NE": "Nebraska",
+    "NV": "Nevada",
+    "NH": "New Hampshire",
+    "NJ": "New Jersey",
+    "NM": "New Mexico",
+    "NY": "New York",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "MP": "Northern Mariana Islands",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PW": "Palau",
+    "PA": "Pennsylvania",
+    "PR": "Puerto Rico",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VT": "Vermont",
+    "VI": "Virgin Islands",
+    "VA": "Virginia",
+    "WA": "Washington",
+    "WV": "West Virginia",
+    "WI": "Wisconsin",
+    "WY": "Wyoming"
 };
 
 /**
@@ -64,7 +75,12 @@ var NATIONAL_PARKS = {
 var AlexaSkill = require('./AlexaSkill');
 
 /**
- * SpaceGeek is a child of AlexaSkill.
+ * HTTPS library
+ */
+var https = require('https');
+
+/**
+ * NationalParkFinder is a child of AlexaSkill.
  * To read more about inheritance in JavaScript, see the link below.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript#Inheritance
@@ -78,8 +94,7 @@ NationalParkFinder.prototype = Object.create(AlexaSkill.prototype);
 NationalParkFinder.prototype.constructor = NationalParkFinder;
 
 NationalParkFinder.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequest, session) {
-    //console.log("onSessionStarted requestId: " + sessionStartedRequest.requestId + ", sessionId: " + session.sessionId);
-    // any initialization logic goes here
+    console.log("onSessionStarted requestId: " + sessionStartedRequest.requestId + ", sessionId: " + session.sessionId);
 };
 
 NationalParkFinder.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
@@ -90,8 +105,7 @@ NationalParkFinder.prototype.eventHandlers.onLaunch = function (launchRequest, s
  * Overridden to show that a subclass can override this function to teardown session state.
  */
 NationalParkFinder.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
-    //console.log("onSessionEnded requestId: " + sessionEndedRequest.requestId + ", sessionId: " + session.sessionId);
-    // any cleanup logic goes here
+    console.log("onSessionEnded requestId: " + sessionEndedRequest.requestId + ", sessionId: " + session.sessionId);
 };
 
 NationalParkFinder.prototype.intentHandlers = {
@@ -109,44 +123,108 @@ NationalParkFinder.prototype.intentHandlers = {
     },
 
     "AMAZON.HelpIntent": function (intent, session, response) {
-        response.ask("You can say the state you want to find national parks in, or, you can say exit... What can I help you with?", "What can I help you with?");
+        var helpQuestion = "You can say the state you want to find national parks in, or, you can say exit... What can I help you with?";
+        response.ask(helpQuestion, "What can I help you with?");
     },
 
     "AMAZON.StopIntent": function (intent, session, response) {
-        var speechOutput = "Goodbye";
-        response.tell(speechOutput);
+        response.tell("Goodbye");
     },
 
     "AMAZON.CancelIntent": function (intent, session, response) {
-        var speechOutput = "Goodbye";
-        response.tell(speechOutput);
+        response.tell("Goodbye");
     }
 };
 
-function getNationalParksSentence(state, parksOnly, countOnly) {
+function getStateCode(state) {
+    for (var stateCode in STATES) {
+        if (STATES[stateCode].toLowerCase() == state.toLowerCase()) {
+            return stateCode;
+        }
+    }
+}
+
+function getNationalParks(state, callback) {
+    var nationalParks = [], 
+        parksArray = [],
+        parksJson = "",
+        apiOptions = {
+            hostname: "developer.nps.gov",
+            port: 443,
+            path: "/api/v0/parks?stateCode=" + getStateCode(state),
+            headers: {
+                "Authorization": "D2A39A3C-85B2-4F9F-8CB4-0095596E3C1E"
+            }
+        };
+    https.get(apiOptions, function (response) {
+        var body = '';
+        response.on('data', function (data) {
+            body += data;
+        });
+        response.on('end', function () {
+            parksJson = JSON.parse(body);
+            parksArray = parksJson.data;
+            for (var i=0; i<parksArray.length; i++) {
+                if (parksArray[i].designation == "National Park") {
+                    nationalParks.push(parksArray[i]);
+                }
+            }
+            callback(nationalParks);
+        });
+    }).on('error', function (e) {
+        console.log("Got error: ", e);
+    });
+}
+
+function getNationalParksSentence(state, nationalParks, parksOnly, countOnly) {
     var sentence = "";
     
-    if (NATIONAL_PARKS[state]) {
+    if (nationalParks.length > 0) {
         
-        var nationalParks = NATIONAL_PARKS[state];
-        var nationalParksCount = nationalParks.length;
-        var nationalParksString = nationalParks.join(", ");
-        var lastCommaIndex = nationalParksString.lastIndexOf(",");
+        var nationalParksCount = nationalParks.length,
+            nationalParkNames = [],
+            nationalParksString = "";
         
-        nationalParksString = nationalParksString.substr(0, lastCommaIndex)
-                            + ", and" + nationalParksString.substr(lastCommaIndex + 1)
+        for (var i=0; i<nationalParksCount; i++) {
+            nationalParkNames.push(nationalParks[i].name);
+        }
+        nationalParksString = nationalParkNames.join(", ");
+        
+        if (nationalParksCount >= 2) {
+            var lastCommaIndex = nationalParksString.lastIndexOf(",");
+            if (nationalParksCount == 2) {
+                nationalParksString = nationalParksString.substr(0, lastCommaIndex)
+                                    + " and" + nationalParksString.substr(lastCommaIndex + 1);
+            } else {
+                nationalParksString = nationalParksString.substr(0, lastCommaIndex)
+                                    + ", and" + nationalParksString.substr(lastCommaIndex + 1);
+            }
+        }
         
         if (parksOnly) {
-            sentence = "Here are the national parks in " + state + " : " + nationalParksString + ".";
+            if (nationalParksCount == 1) {
+                sentence = nationalParksString + " is the only national park in " + state + ".";
+            } else {
+                sentence = "Here are the national parks in " + state + " : " + nationalParksString + ".";
+            }
         } else if (countOnly) {
-            sentence = "There are " + nationalParksCount + " national parks in " + state;
+            if (nationalParksCount == 1) {
+                sentence = "There is only one national park in " + state + ".";
+            } else {
+                sentence = "There are " + nationalParksCount + " national parks in " + state;
+            }
         } else {
-             sentence = "There are " + nationalParksCount + " national parks in " + state + " : "
-                      + nationalParksString+ ".";
+            if (nationalParksCount == 1) {
+                sentence = "There is only one national park in " + state + " : "
+                         + nationalParksString + ".";
+            } else {
+                sentence = "There are " + nationalParksCount + " national parks in " + state + " : "
+                         + nationalParksString + ".";
+            }
         }
         
     } else {
-        sentence = "Unfortunately there are no national parks in : " + state + ".";
+        sentence = "Unfortunately, there are no national parks in " + state + ".";
     }
     
     return sentence;
@@ -158,45 +236,47 @@ function getNationalParksSentence(state, parksOnly, countOnly) {
 function welcomeIntent(response) {
     
     var cardTitle = "National Park Finder";
-    var speechOutput = "Welcome to National Park Finder!  Ask me a question to get started.";
+    var speechOutput = "Welcome to National Park Finder!  Which state would you like to find parks in?";
+    var repromptOutput = "With National Park Finder, you can find parks in any state or US Territory.";
+    var cardOutput = "National Park Finder.  Which state do you want to find parks in?";
     
-    response.tellWithCard(speechOutput, cardTitle, speechOutput);
+    response.askWithCard(speechOutput, repromptOutput, cardTitle, cardOutput);
 }
 
 /**
  * Find out which parks are in a particular state
  */
 function whatParksInStateIntent(intent, response) {
-    
     var state = intent.slots.State.value.toLowerCase();
-    var cardTitle = "Your National Parks";
-    var speechOutput = getNationalParksSentence(state, true, false);
-    
-    response.tellWithCard(speechOutput, cardTitle, speechOutput);
+    getNationalParks(state, function (nationalParks) {
+        var cardTitle = "Your National Parks";
+        var speechOutput = getNationalParksSentence(state, nationalParks, true, true);
+        response.tellWithCard(speechOutput, cardTitle, speechOutput);
+    });
 }
 
 /**
  * Find out how many parks are in a particular state
  */
 function howManyParksInStateIntent(intent, response) {
-    
     var state = intent.slots.State.value.toLowerCase();
-    var cardTitle = "Your National Parks";
-    var speechOutput = getNationalParksSentence(state, false, true);
-    
-    response.tellWithCard(speechOutput, cardTitle, speechOutput);
+    getNationalParks(state, function (nationalParks) {
+        var cardTitle = "Your National Parks";
+        var speechOutput = getNationalParksSentence(state, nationalParks, false, true);
+        response.tellWithCard(speechOutput, cardTitle, speechOutput);
+    });
 }
 
 /**
  * Find out how many parks are in a particular state
  */
 function stateOnlyIntent(intent, response) {
-    
     var state = intent.slots.State.value.toLowerCase();
-    var cardTitle = "Your National Parks";
-    var speechOutput = getNationalParksSentence(state, false, false);
-    
-    response.tellWithCard(speechOutput, cardTitle, speechOutput);
+    getNationalParks(state, function (nationalParks) {
+        var cardTitle = "Your National Parks";
+        var speechOutput = getNationalParksSentence(state, nationalParks, false, false);
+        response.tellWithCard(speechOutput, cardTitle, speechOutput);
+    });
 }
 
 // Create the handler that responds to the Alexa Request.
