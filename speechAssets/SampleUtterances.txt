@@ -1,5 +1,11 @@
 WhatParksInStateIntent what national parks are in {State}
 WhatParksInStateIntent what national parks are located in {State}
+WhatParksInStateIntent which national parks are in {State}
+WhatParksInStateIntent which national parks are located in {State}
+WhatParksInStateIntent what parks are in {State}
+WhatParksInStateIntent what parks are located in {State}
+WhatParksInStateIntent which parks are in {State}
+WhatParksInStateIntent which parks are located in {State}
 WhatParksInStateIntent find me national parks in {State}
 WhatParksInStateIntent find me national parks that are in {State}
 WhatParksInStateIntent find me national parks that are located in {State}
@@ -18,7 +24,9 @@ HowManyParksInStateIntent how many parks in {State}
 HowManyParksInStateIntent how many are located in {State}
 HowManyParksInStateIntent how many are in {State}
 HowManyParksInStateIntent how many in {State}
-
-NationalParkInfoIntent tell me about {NationalPark}
+HowManyParksInStateIntent what is the number of national parks in {State}
+HowManyParksInStateIntent what is the number of parks in {State}
+HowManyParksInStateIntent number of national parks in {State}
+HowManyParksInStateIntent number of parks in {State}
 
 StateOnlyIntent {State}
