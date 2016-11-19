@@ -8,8 +8,7 @@ var https = require('https');
  */
 var nationalParkService = (function () {
     
-    var _API_KEY = "D2A39A3C-85B2-4F9F-8CB4-0095596E3C1E",
-        _API_HOST = "developer.nps.gov",
+    var _API_HOST = "developer.nps.gov",
         _API_PORT = 443,
         _API_PATH = "/api/v0/parks",
         _DESIGNATION = "National Park";
@@ -28,7 +27,7 @@ var nationalParkService = (function () {
                 port: _API_PORT,
                 path: _API_PATH + "?stateCode=" + stateCode,
                 headers: {
-                    "Authorization": _API_KEY
+                    "Authorization": process.env.NPS_API_KEY
                 }
             };
         https.get(apiOptions, function (response) {
@@ -48,6 +47,7 @@ var nationalParkService = (function () {
             });
         }).on('error', function (e) {
             console.log("Error retrieving national parks from API for state []" + stateCode + "]: ", e);
+            callback([]);
         });
     };
     
