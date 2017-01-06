@@ -37,17 +37,21 @@ var nationalParkService = (function () {
                 responseBody += data;
             });
             response.on('end', function () {
-                parksJson = JSON.parse(responseBody);
-                parksArray = parksJson.data;
-                for (var i=0; i<parksArray.length; i++) {
-                    if (parksArray[i].designation == _DESIGNATION) {
-                        nationalParks.push(parksArray[i]);
+                try {
+                    parksJson = JSON.parse(responseBody);
+                    parksArray = parksJson.data;
+                    for (var i=0; i<parksArray.length; i++) {
+                        if (parksArray[i].designation == _DESIGNATION) {
+                            nationalParks.push(parksArray[i]);
+                        }
                     }
+                } catch (e) {
+                    console.error("Error parsing API response: " + e);
                 }
                 callback(nationalParks);
             });
         }).on('error', function (e) {
-            console.log("Error retrieving national parks from API for state []" + stateCode + "]: ", e);
+            console.error("Error retrieving national parks from API for state [" + stateCode + "]: ", e);
             callback([]);
         });
     };
