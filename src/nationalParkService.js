@@ -8,9 +8,10 @@ var https = require('https');
  */
 var nationalParkService = (function () {
     
-    var _API_HOST = "developer.nps.gov",
-        _API_PORT = 443,
-        _API_PATH = "/api/v0/parks",
+    var _API_KEY = process.env.NPS_API_KEY,
+        _API_HOST = process.env.NPS_API_HOST || "developer.nps.gov",
+        _API_PORT = process.env.NPS_API_PORT || 443,
+        _API_PATH = process.env.NPS_API_PATH || "/api/v0/parks",
         _DESIGNATION = "National Park";
 
     /**
@@ -27,7 +28,7 @@ var nationalParkService = (function () {
                 port: _API_PORT,
                 path: _API_PATH + "?stateCode=" + stateCode,
                 headers: {
-                    "Authorization": process.env.NPS_API_KEY
+                    "Authorization": _API_KEY
                 }
             };
         https.get(apiOptions, function (response) {
