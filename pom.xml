@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>org.wykapedia.ask</groupId>
+    <artifactId>national-park-finder-alexa-skill-kit</artifactId>
+    <version>1.2.0</version>
+    <packaging>pom</packaging>
+
+    <name>National Park Finder</name>
+    <description>National Park Finder Alexa Skill Kit</description>
+    <url>https://www.alexaskillstore.com/National-Park-Finder/40836</url>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assemble</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    
+</project>
