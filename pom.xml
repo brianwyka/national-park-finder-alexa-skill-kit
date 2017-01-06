@@ -13,7 +13,15 @@
     <description>National Park Finder Alexa Skill Kit</description>
     <url>https://www.alexaskillstore.com/National-Park-Finder/40836</url>
     
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <s3.bucket>amazon-alexa-skills</s3.bucket>
+        <s3.bucket.releases>releases</s3.bucket.releases>
+        <s3.bucket.snapshots>snapshots</s3.bucket.snapshots>
+    </properties>
+    
     <build>
+        
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -36,6 +44,28 @@
                 </executions>
             </plugin>
         </plugins>
+        
+        <extensions>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+            </extension>
+        </extensions>
+        
     </build>
+    
+    <distributionManagement>
+        <repository>
+            <id>aws-release</id>
+            <name>AWS Release Repository</name>
+            <url>s3://${s3.bucket}/${s3.bucket.releases}</url>
+        </repository>
+        <snapshotRepository>
+            <id>aws-snapshot</id>
+            <name>AWS Snapshot Repository</name>
+            <url>s3://${s3.bucket}/${s3.bucket.snapshots}</url>
+        </snapshotRepository>
+    </distributionManagement>
     
 </project>

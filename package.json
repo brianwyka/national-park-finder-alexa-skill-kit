@@ -1,0 +1,24 @@
+{
+  "name": "national-park-finder-alexa-skill-kit",
+  "version": "1.0.4",
+  "description": "National Park Finder Alexa Skill Kit",
+  "main": "src/index.js",
+  "contributors": [
+    "Brian Wyka"
+  ],
+  "dependencies": {
+    "aws-sdk": "^2.4.7"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wykapedia/national-park-finder-alexa-skill-kit.git"
+  },
+  "keywords": [
+    "National",
+    "Park",
+    "Finder"
+  ],
+  "author": "wykapedia.org",
+  "license": "MIT"
+}
